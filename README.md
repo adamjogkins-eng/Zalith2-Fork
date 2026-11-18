@@ -1,66 +1,44 @@
+# ZL2+ Continuation
 
-# Zalith Launcher 2+ (PLUS)
+An unofficial community continuation of **Zalith Launcher 2+ (PLUS)**.
 
-[**「English」**](./README.md) | [中文（简体）](./README_ZH_CN.md) | [中文（台灣）](./README_ZH_TW.md) | [Türkçe](./README_TR.md)
+This project is based on Zalith Launcher 2+ and Zalith Launcher 2.  
+It is **not affiliated with, endorsed by, or supported by** the original  
+Zalith Launcher developers, Zalith Launcher 2+ developers, PojavLauncher,  
+Mojang, or Microsoft.
 
-> **⚠️ UNOFFICIAL MODIFIED VERSION**
-> 
-> This is an unofficial fork of [Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2). This project is **not affiliated with or endorsed by the official Zalith Launcher project**.
+## About
 
-**Zalith Launcher 2+** is a community-modified launcher for **Android devices** tailored for [Minecraft: Java Edition](https://www.minecraft.net/). It builds upon the foundation of [Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2), utilizing [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher/tree/v3_openjdk/app_pojavlauncher/src/main/jni) as its core launching engine with a modern UI built using **Jetpack Compose** and **Material Design 3**.
+ZL2+ Continuation is a free, open-source Minecraft: Java Edition launcher  
+for Android. It aims to improve the launcher with:
 
-## Some Statistics
+- Better performance tools and FPS tuning
+- A more energetic and customizable interface
+- Optional animations, sounds, and themes
+- Useful quality-of-life launcher features
 
-July 14, 2026:
-Excluding merges, 3 authors have pushed 265 commits to main and 266 commits to all branches.
+## Free Forever
 
-On main, 288 files have changed and there have been 10.634 additions and 3.095 deletions
+This launcher is free to use. This fork does not add paid features,  
+subscriptions, paywalls, ads, or paid unlocks.
 
-## 📋 What's New in This Fork?
+## Credits
 
-This fork aims to enhance and customize the original Zalith Launcher 2 experience. Some key improvements include:
+- [Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2)
+- [Zalith Launcher 2+ (PLUS)](https://github.com/Star1xr/ZalithLauncher2Plus)
+- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher)
 
-- [x] Cape system
-- [x] Fixes
-- [x] Offline accounts
-- [x] Chroma names
-- [x] Shortcuts in main screen
-- [x] Importing/exporting settings
-- [x] Importing/exporting accounts along with capes and skins, chroma names
-- [x] Implemented mobileglues with config
-- [x] Config UI remake
+## License
 
-more that i cant count...
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
 
+You may use, study, modify, and redistribute this launcher for free.
 
-## 🔗 Upstream Project
+If you distribute a modified version, you must provide its source code  
+and license it under GPL-3.0 as well.
 
-This project is derived from the excellent work of the Zalith Launcher team:
-- **Original Project:** [ZalithLauncher2](https://github.com/ZalithLauncher/ZalithLauncher2)
-- **Original License:** GPL-3.0
-
-Please visit the upstream project if you want the official, unmodified version.
-
-## 🌐 Language and Translation Support
-
-This fork uses translations of Zalith Launcher 2. To contribute translations or improvements, please consider contributing upstream to the [Zalith Launcher 2 Weblate project](https://hosted.weblate.org/projects/zalithlauncher2).
-
-## 📦 Build Instructions (For Developers)
-
-### Requirements
-
-* Android Studio **Bumblebee** or newer
-* Android SDK:
-  * **Minimum API level**: 26
-  * **Target API level**: 35
-* JDK 11
-
-### Build Steps
-
-```bash
-git clone https://github.com/Star1xr/ZalithLauncher2Plus.git
-# Open the project in Android Studio and build
-```
+This project is provided free of charge. There are no paid features,  
+subscriptions, or paywalls introduced by this fork.
 
 ## 📜 License
 
