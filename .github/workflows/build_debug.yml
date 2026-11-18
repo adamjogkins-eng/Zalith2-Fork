@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-      arch: ["all"]
+        arch: ["all"]
       fail-fast: false
 
     steps:
