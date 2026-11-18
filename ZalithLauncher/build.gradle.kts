@@ -187,6 +187,8 @@ buildKeys {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+implementation("androidx.datastore:datastore-preferences:1.3.0")
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.runtime.compose)
