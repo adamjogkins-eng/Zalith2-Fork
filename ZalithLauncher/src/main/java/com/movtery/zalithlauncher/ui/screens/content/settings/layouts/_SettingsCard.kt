@@ -43,108 +43,13 @@ import com.movtery.zalithlauncher.ui.components.TitleAndSummary
  * 根据卡片在UI组中的位置，选择不同的圆角形状
  */
 enum class CardPosition {
-    /**
-     * 位于 UI 组的顶部
-     * ``` txt
-     *   _______
-     *  +       +
-     * |         |
-     * |         |
-     * |         |
-     *  ---------
-     * ```
-     */
     Top,
-
-    /**
-     * 位于 UI 组的顶部左侧
-     * ``` txt
-     *   ________
-     *  +        |
-     * |         |
-     * |         |
-     * |         |
-     *  ---------
-     * ```
-     */
     TopStart,
-
-    /**
-     * 位于 UI 组的顶部右侧
-     * ``` txt
-     *  ________
-     * |        +
-     * |         |
-     * |         |
-     * |         |
-     *  ---------
-     * ```
-     */
     TopEnd,
-
-    /**
-     * 位于 UI 组的中部
-     * ``` txt
-     *  _________
-     * |         |
-     * |         |
-     * |         |
-     * |         |
-     *  ---------
-     * ```
-     */
     Middle,
-
-    /**
-     * 位于 UI 组的底部
-     * ``` txt
-     *  _________
-     * |         |
-     * |         |
-     * |         |
-     *  +       +
-     *   -------
-     * ```
-     */
     Bottom,
-
-    /**
-     * 位于 UI 组的底部左侧
-     * ``` txt
-     *  _________
-     * |         |
-     * |         |
-     * |         |
-     *  +        |
-     *   --------
-     * ```
-     */
     BottomStart,
-
-    /**
-     * 位于 UI 组的底部右侧
-     * ``` txt
-     *  _________
-     * |         |
-     * |         |
-     * |         |
-     * |        +
-     *  --------
-     * ```
-     */
     BottomEnd,
-
-    /**
-     * 单个 UI 组件
-     * ``` txt
-     *   _______
-     *  +       +
-     * |         |
-     * |         |
-     *  +       +
-     *   -------
-     * ```
-     */
     Single
 }
 
@@ -154,7 +59,7 @@ enum class CardPosition {
 @Composable
 fun rememberSettingsCardShape(
     position: CardPosition,
-    outerShape: Dp = 28.dp,
+    outerShape: Dp = 14.dp,
     innerShape: Dp = 4.dp
 ): Shape {
     return remember(position, outerShape, innerShape) {
@@ -205,7 +110,7 @@ fun rememberSettingsCardShape(
 fun SettingsCard(
     modifier: Modifier = Modifier,
     position: CardPosition,
-    outerShape: Dp = 28.dp,
+    outerShape: Dp = 14.dp,
     innerShape: Dp = 4.dp,
     content: @Composable ColumnScope.() -> Unit
 ) {
@@ -222,7 +127,7 @@ fun SettingsCard(
 fun SettingsCard(
     modifier: Modifier = Modifier,
     position: CardPosition,
-    outerShape: Dp = 28.dp,
+    outerShape: Dp = 14.dp,
     innerShape: Dp = 4.dp,
     onClick: () -> Unit,
     enabled: Boolean = true,
@@ -247,7 +152,7 @@ fun SettingsCard(
     summary: String? = null,
     titleStyle: TextStyle = MaterialTheme.typography.titleSmall,
     summaryStyle: TextStyle = MaterialTheme.typography.labelSmall,
-    outerShape: Dp = 28.dp,
+    outerShape: Dp = 14.dp,
     innerShape: Dp = 4.dp,
     innerPadding: PaddingValues = PaddingValues(all = 16.dp),
     onClick: () -> Unit,
@@ -292,7 +197,7 @@ fun SettingsCardColumn(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         content = content
     )
 }
