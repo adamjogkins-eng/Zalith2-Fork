@@ -347,6 +347,38 @@ fun RendererSettingsScreen(
                         }
                     )
 
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = "Quick resolution presets",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = "Lower resolution trades image sharpness for less rendering work. " +
+                                "Choose before launching Minecraft.",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            listOf(50, 75, 100).forEach { percent ->
+                                OutlinedButton(
+                                    modifier = Modifier.weight(1f),
+                                    onClick = {
+                                        AllSettings.resolutionRatio.save(percent)
+                                    }
+                                ) {
+                                    Text(text = "$percent%")
+                                }
+                            }
+                        }
+                    }
+
                     IntSliderSettingsCard(
                         modifier = Modifier.fillMaxWidth(),
                         position = CardPosition.Middle,
@@ -617,4 +649,3 @@ private fun RunBenchmarkPill(
         }
     }
 }
-
