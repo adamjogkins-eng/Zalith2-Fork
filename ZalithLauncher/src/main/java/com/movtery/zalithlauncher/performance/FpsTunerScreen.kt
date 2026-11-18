@@ -11,165 +11,225 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun FpsTunerScreen(
     store: FpsTunerStore,
     benchmark: FpsBenchmark,
     onApplyPreset: (FpsPreset) -> Unit
 ) {
-    val state by store.state.collectAsState(initial = FpsTunerState())
-    val benchmarkState by benchmark.state.collectAsState()
+    val state by store.state.collectAsState(
+        initial = FpsTunerState()
+    )
+
+    val coroutineScope = rememberCoroutineScope()
+    var saving by remember { mutableStateOf(false) }
+    var statusMessage by remember {
+        mutableStateOf<String?>(null)
+    }
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = androidx.compose.foundation.layout.PaddingValues(
+            16.dp
+        )
     ) {
         item {
-            Text(
-                text = "FPS Tuner",
-                style = MaterialTheme.typography.headlineSmall
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = "FPS Tuner",
+                    style = MaterialTheme.typography.headlineSmall
+                )
+
+                Text(
+                    text = "Preset storage preview",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Text(
+                    text = "These presets are not connected to the " +
+                        "game settings yet. Saving one does not " +
+                        "change Minecraft performance.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Text(
+                    text = "Use the quick resolution buttons in " +
+                        "Renderer settings for the integrated " +
+                        "resolution control.",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
 
-        items(FpsPresets.ALL) { preset ->
+        item {
             Card(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    val presetName =
+                        FpsPresets.byId(state.presetId)?.name
+                            ?: state.presetId
+
+                    Text(
+                        text = "Saved preset: $presetName",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Text(
+                        text = "Stored resolution: " +
+                            "${(state.resolutionScale * 100).toInt()}%"
+                    )
+
+                    val refreshRateText =
+                        if (state.maxRefreshRate > 0) {
+                            "${state.maxRefreshRate} Hz"
+                        } else {
+                            "Not specified"
+                        }
+
+                    Text(
+                        text = "Stored refresh preference: " +
+                            refreshRateText
+                    )
+
+                    Text(
+                        text = "Stored sustained performance: " +
+                            if (state.sustainedPerformance) {
+                                "On"
+                            } else {
+                                "Off"
+                            }
+                    )
+
+                    Text(
+                        text = "Stored big-core preference: " +
+                            if (state.forceBigCore) {
+                                "On"
+                            } else {
+                                "Off"
+                            }
+                    )
+
+                    Text(
+                        text = "Stored preferences only; " +
+                            "not active game settings.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+        }
+
+        items(
+            items = FpsPresets.ALL,
+            key = { preset -> preset.id }
+        ) { preset ->
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
                         text = preset.name,
                         style = MaterialTheme.typography.titleMedium
                     )
 
-                    Text(text = preset.description)
+                    Text(
+                        text = "Resolution preference: " +
+                            "${(preset.resolutionScale * 100).toInt()}%"
+                    )
+
+                    Text(
+                        text = "This saves a preset for future " +
+                            "integration. It does not apply RAM, " +
+                            "JVM, renderer, or driver changes.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End
                     ) {
                         Button(
+                            enabled = !saving,
                             onClick = {
-                                onApplyPreset(preset)
-                            }
-                        ) {
-                            Text("Apply")
-                        }
-                    }
-                }
-            }
-        }
+                                saving = true
+                                statusMessage = null
 
-        item {
-            Card {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text("Resolution scale: ${(state.resolutionScale * 100).toInt()}%")
-
-                    Slider(
-                        value = state.resolutionScale,
-                        onValueChange = { store.setResolutionScale(it) },
-                        valueRange = 0.5f..1.0f
-                    )
-
-                    Text("Max refresh rate: ${state.maxRefreshRate} FPS")
-
-                    Slider(
-                        value = state.maxRefreshRate.toFloat(),
-                        onValueChange = { store.setMaxRefreshRate(it.toInt()) },
-                        valueRange = 30f..120f
-                    )
-
-                    SettingToggle(
-                        title = "Sustained performance",
-                        checked = state.sustainedPerformance,
-                        onCheckedChange = { store.setSustainedPerformance(it) }
-                    )
-
-                    SettingToggle(
-                        title = "Force big cores",
-                        checked = state.forceBigCore,
-                        onCheckedChange = { store.setForceBigCore(it) }
-                    )
-                }
-            }
-        }
-
-        item {
-            Card {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    Text("Benchmark")
-
-                    if (benchmarkState.running) {
-                        Text("Running: ${benchmarkState.elapsedSeconds}s")
-                        Text("Current FPS: ${benchmarkState.currentFps.toInt()}")
-                    } else {
-                        benchmarkState.result?.let { result ->
-                            Text("Average FPS: ${result.averageFps.toInt()}")
-                            Text("1% low FPS: ${result.onePercentLowFps.toInt()}")
-                            Text("Average frame time: ${result.averageFrameTimeMs.toInt()} ms")
-                            Text("Samples: ${result.samples}")
-                        }
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        Button(
-                            onClick = {
-                                if (benchmarkState.running) {
-                                    benchmark.stop()
-                                } else {
-                                    benchmark.start()
+                                coroutineScope.launch {
+                                    try {
+                                        store.applyPreset(preset)
+                                        statusMessage =
+                                            "${preset.name} saved. " +
+                                            "Game settings unchanged."
+                                    } catch (
+                                        cancelled: CancellationException
+                                    ) {
+                                        throw cancelled
+                                    } catch (error: Exception) {
+                                        statusMessage =
+                                            "Could not save preset: " +
+                                            (
+                                                error.localizedMessage
+                                                    ?: "Unknown error"
+                                            )
+                                    } finally {
+                                        saving = false
+                                    }
                                 }
                             }
                         ) {
                             Text(
-                                if (benchmarkState.running) "Stop" else "Start"
+                                text = if (saving) {
+                                    "Saving…"
+                                } else {
+                                    "Save preset"
+                                }
                             )
                         }
                     }
                 }
             }
         }
-    }
-}
 
-@Composable
-private fun SettingToggle(
-    title: String,
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = title,
-            modifier = Modifier.weight(1f)
-        )
+        statusMessage?.let { message ->
+            item {
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            }
+        }
 
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
+        item {
+            Text(
+                text = "Benchmark controls are temporarily disabled " +
+                    "until accurate game-frame measurements " +
+                    "are connected.",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }
