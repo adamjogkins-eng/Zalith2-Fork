@@ -19,9 +19,12 @@
 package com.movtery.zalithlauncher.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.matchParentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -32,6 +35,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.UiComposable
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
@@ -40,6 +44,21 @@ import com.movtery.zalithlauncher.ui.screens.content.elements.backgroundGlass
 import com.movtery.zalithlauncher.ui.theme.cardColor
 import com.movtery.zalithlauncher.ui.theme.cardTitleColor
 import com.movtery.zalithlauncher.ui.theme.onCardColor
+
+private val glassEdgeBrush = Brush.verticalGradient(
+    colors = listOf(
+        Color.White.copy(alpha = 0.34f),
+        Color.White.copy(alpha = 0.10f),
+        Color.White.copy(alpha = 0.12f)
+    )
+)
+
+private val glassHighlightBrush = Brush.verticalGradient(
+    colors = listOf(
+        Color.White.copy(alpha = 0.10f),
+        Color.Transparent
+    )
+)
 
 /**
  * 背景卡片组件，
@@ -60,8 +79,8 @@ fun BackgroundCard(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val glassBorder = border ?: BorderStroke(
-        width = 1.dp,
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.18f)
+        width = 1.25.dp,
+        brush = glassEdgeBrush
     )
 
     Card(
@@ -71,10 +90,18 @@ fun BackgroundCard(
         elevation = elevation,
         border = glassBorder,
     ) {
-        Column(
-            modifier = Modifier.backgroundGlass(blur, colors.containerColor, influencedByBackground),
-            content = content
-        )
+        Box {
+            Column(
+                modifier = Modifier.backgroundGlass(blur, colors.containerColor, influencedByBackground),
+                content = content
+            )
+
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(brush = glassHighlightBrush)
+            )
+        }
     }
 }
 
@@ -100,23 +127,33 @@ fun BackgroundCard(
     content: @Composable @UiComposable ColumnScope.() -> Unit
 ) {
     val glassBorder = border ?: BorderStroke(
-        width = 1.dp,
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.18f)
+        width = 1.25.dp,
+        brush = glassEdgeBrush
     )
+    val interactionSource = rememberLiquidGlassInteractionSource()
 
     Card(
-        modifier = modifier,
+        modifier = modifier.liquidGlassPress(interactionSource),
         shape = shape,
         colors = colors,
         elevation = elevation,
         border = glassBorder,
         onClick = onClick,
         enabled = enabled,
+        interactionSource = interactionSource,
     ) {
-        Column(
-            modifier = Modifier.backgroundGlass(blur, colors.containerColor, influencedByBackground),
-            content = content
-        )
+        Box {
+            Column(
+                modifier = Modifier.backgroundGlass(blur, colors.containerColor, influencedByBackground),
+                content = content
+            )
+
+            Box(
+                modifier = Modifier
+                    .matchParentSize()
+                    .background(brush = glassHighlightBrush)
+            )
+        }
     }
 }
 
