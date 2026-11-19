@@ -9,7 +9,7 @@ Mojang, or Microsoft.
 
 ## About
 
-ZL2+ Continuation is a free, open-source Minecraft: Java Edition launcher  
+ZL2++ is a free, open-source Minecraft: Java Edition launcher  
 for Android. It aims to improve the launcher with:
 
 - Better performance tools and FPS tuning
