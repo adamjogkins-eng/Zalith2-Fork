@@ -84,7 +84,9 @@ fun HnmodBridgeScreen(modifier: Modifier = Modifier) {
 
                         val target = File(downloads, fileName)
                         context.contentResolver.openInputStream(uri)?.use { input ->
-                            target.outputStream().use(output -> input.copyTo(output))
+                            target.outputStream().use { output ->
+                                input.copyTo(output)
+                            }
                         }
                         target
                     }.getOrNull()
@@ -172,7 +174,9 @@ fun HnmodBridgeScreen(modifier: Modifier = Modifier) {
 
                                         val target = File(downloads, fileName)
                                         URL(directUrl).openStream().use { input ->
-                                            target.outputStream().use(output -> input.copyTo(output))
+                                            target.outputStream().use { output ->
+                                                input.copyTo(output)
+                                            }
                                         }
                                         target
                                     }.getOrNull()
