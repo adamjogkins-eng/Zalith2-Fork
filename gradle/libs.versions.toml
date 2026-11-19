@@ -122,8 +122,8 @@ toml4j = { module = "com.moandjiezana:toml4j", version.ref = "toml4j" }
 xz = { module = "org.tukaani:xz", version.ref = "xz" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt" }
-dagger-hilt-android = { group = "com.google.dagger:hilt-android", version.ref = "dagger" }
-dagger-hilt-android-compiler = { group = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
+dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+dagger-hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "dagger" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
